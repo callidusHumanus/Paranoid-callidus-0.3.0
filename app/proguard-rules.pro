@@ -1,0 +1,3 @@
+-keep class org.torproject.** { *; }
+-keep class net.freehaven.** { *; }
+-keep class IPtProxy.** { *; }

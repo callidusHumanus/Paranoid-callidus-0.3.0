@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+html,body{margin:0;height:100%;background:#05080a;color:#d7efe4;font-family:system-ui,sans-serif;overflow:hidden}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+.c{position:absolute;left:0;right:0;bottom:12%;text-align:center;text-shadow:0 0 14px #19e68c}
+h1{font-weight:300;letter-spacing:.3em;font-size:18px;margin:0}p{margin:6px;color:#6f8a80;letter-spacing:.25em;font-size:10px}
+small{color:#456;font-size:9px}
+</style></head><body><canvas id="g"></canvas>
+<div class="c"><h1>PARANOID CALLIDUS</h1><p>THE INTERNET KNOWS LESS.</p><small>Globe is decorative; routes are illustrative, not live network data.</small></div>
+<script>
+const c=document.getElementById('g'),x=c.getContext('2d');let W,H,R;
+function rs(){const d=devicePixelRatio||1;W=c.width=innerWidth*d;H=c.height=innerHeight*d;R=Math.min(W,H)*.34}
+addEventListener('resize',rs);rs();
+const N=700,pts=[];for(let i=0;i<N;i++){const y=1-2*(i+.5)/N,r=Math.sqrt(1-y*y),t=i*2.399963;pts.push([Math.cos(t)*r,y,Math.sin(t)*r])}
+const arcs=[[0.2,0.5,-0.8,0.3],[-0.8,0.3,0.7,-0.4],[0.7,-0.4,0.1,0.9]];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let a=0;
+function pr(p,a){const cs=Math.cos(a),sn=Math.sin(a),X=p[0]*cs+p[2]*sn,Z=-p[0]*sn+p[2]*cs;return[W/2+X*R,H*.4-p[1]*R,Z]}
+function f(){x.clearRect(0,0,W,H);
+x.strokeStyle='#19e68c55';x.lineWidth=2;x.beginPath();x.arc(W/2,H*.4,R*1.25,0,7);x.stroke();
+x.strokeStyle='#2fd6ff44';x.beginPath();x.ellipse(W/2,H*.4,R*1.4,R*.35,.3,0,7);x.stroke();
+for(const p of pts){const q=pr(p,a);if(q[2]<0)continue;x.fillStyle='rgba(25,230,140,'+(.25+.6*q[2])+')';x.fillRect(q[0],q[1],2,2)}
+x.strokeStyle='#2fd6ff';x.lineWidth=2;
+for(const [u,v,s,t] of arcs){const A=norm([u,v,Math.sqrt(Math.max(0,1-u*u-v*v))]),B=norm([s,t,Math.sqrt(Math.max(0,1-s*s-t*t))]);x.beginPath();let on=false;
+for(let k=0;k<=30;k++){const m=k/30,P=norm([A[0]*(1-m)+B[0]*m,A[1]*(1-m)+B[1]*m,A[2]*(1-m)+B[2]*m]),L=1+.25*Math.sin(Math.PI*m),q=pr([P[0]*L,P[1]*L,P[2]*L],a);on?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]);on=true}x.stroke()}
+if(!reduce)a+=.004;requestAnimationFrame(f)}
+function norm(v){const l=Math.hypot(...v)||1;return v.map(e=>e/l)}
+f();
+</script></body></html>
